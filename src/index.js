@@ -3,11 +3,22 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import AuthProvider from './Contexts/AuthProvider';
+import CollectionProvider from './Contexts/CollectionProvider';
+import {QueryClient,QueryClientProvider} from '@tanstack/react-query'
+
+const queryClient = new QueryClient()
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <QueryClientProvider client={queryClient}>
+    <AuthProvider>
+      <CollectionProvider>
+        <App />
+      </CollectionProvider>
+    </AuthProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 );
 

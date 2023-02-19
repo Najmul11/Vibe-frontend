@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {FaTwitter, FaLinkedin, FaDiscord } from 'react-icons/fa';
 import {BiHash } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../../Contexts/AuthProvider';
 
 
 const LeftSideBar = () => {
-    const user={
-        name:"Najmul Pro"
-    }
+    const {user}= useContext(AuthContext)
+
+ 
     return (
         <>
             {
@@ -15,9 +16,9 @@ const LeftSideBar = () => {
                 <div >
 
                     <div className='flex items-center gap-5 border-b border-purple-600 border-opacity-10 px-5 py-3'>
-                        <img src="https://picsum.photos/200/300" alt="" className='rounded-full w-12 h-12 focus:ring-blue-800 border-4 border-purple-500' />
+                        <img src={user?.photoURL} alt="" className='rounded-full w-12 h-12 focus:ring-blue-800 border-4 border-purple-500' />
                         <div>
-                            <span className='font-semibold'>{user?.name}</span>
+                            <span className='font-semibold'>{user?.displayName}</span>
                             <p className='text-gray-400'>2 friends</p>
                         </div>
                     </div>

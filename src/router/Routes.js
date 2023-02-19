@@ -6,6 +6,7 @@ import { Home } from "../Pages/Home/Home"
 import Media from "../Pages/Media/Media"
 import Messages from "../Pages/Messages/Messages"
 import SinglePost from "../Pages/SinglePost/SinglePost"
+import ProtectedRoute from "./ProtectedRoute"
 
 export const router = createBrowserRouter([
     {
@@ -26,14 +27,14 @@ export const router = createBrowserRouter([
                 element:<Media/>
             },
             {
-                path:'/media/:postid',
+                path:'/media/:postId',
                 element:<SinglePost/>
             },
         ]
     },
     {
         path:'/about',
-        element:<About/>
+        element:<ProtectedRoute><About/></ProtectedRoute>
     },
     {
         path:'/*',

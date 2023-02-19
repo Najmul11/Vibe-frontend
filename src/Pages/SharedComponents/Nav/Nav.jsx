@@ -3,14 +3,22 @@ import { Link, NavLink } from 'react-router-dom';
 import { DarkContext } from '../../../App';
 import { IoMdArrowDropdown} from 'react-icons/io';
 import { AiOutlineHome } from 'react-icons/ai';
-import { BiMessageSquareDetail} from 'react-icons/bi';
+import { BiMessageSquareDetail, BiLogOut} from 'react-icons/bi';
 import { MdOutlinePermMedia} from 'react-icons/md';
 import { HiSun,HiOutlineMoon} from 'react-icons/hi';
 import './Nav.css'
+import { AuthContext } from '../../../Contexts/AuthProvider';
 
 const Nav = () => {
-    const {darkMode, handleDarkMode}=useContext(DarkContext) 
-    const user = true
+    const {darkMode, handleDarkMode}=useContext(DarkContext)
+    const {user,  logout}= useContext(AuthContext)
+
+    const handleLogout=()=>{
+        logout()
+        .then(result=>{})
+        .catch(error=>{})
+    }
+
     return (
         
         <nav className="bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900">
@@ -22,9 +30,14 @@ const Nav = () => {
 
                     {
                         user && 
+                       <div className='flex gap-3 items-center'>
                         <NavLink to='/about' className="flex py-2 pl-3 pr-4 text-black rounded text-lg bg-purple-500 items-center bg-opacity-10 hover:bg-gray-200 dark:bg-gray-200 dark:bg-opacity-50">
-                        <span className='text-sm font-semibold'>about</span><IoMdArrowDropdown/>
+                        <span className='text-sm font-semibold'>About</span><IoMdArrowDropdown/>
                         </NavLink>
+                        <button onClick={handleLogout} className="flex  py-2 pl-3 pr-4 text-black rounded text-lg bg-purple-500 items-center bg-opacity-10 hover:bg-gray-200 dark:bg-gray-200 dark:bg-opacity-50">
+                        <span className='text-sm font-semibold'>Logout</span><BiLogOut/>
+                        </button>
+                       </div>
                     }
 
                     <button data-collapse-toggle="navbar-cta" type="button" className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-cta" aria-expanded="false">

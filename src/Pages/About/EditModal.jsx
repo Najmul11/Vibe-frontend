@@ -1,13 +1,13 @@
 import React from 'react';
 import EditModalBody from './EditModalBody';
 
-const EditModal = () => {
+const EditModal = ({isLoading, setIsLoading}) => {
     return (
         <div>
             <input type="checkbox" id="edit-profile-modal" className="modal-toggle" />
             <div className="modal">
                 <div className="modal-box dark:bg-gray-800" >
-                    <EditModalBody/>
+                    <EditModalBody setIsLoading={setIsLoading} isLoading={isLoading}/>
 
                     <div className="modal-action">
                         <label htmlFor="edit-profile-modal" className="cursor-pointer font-medium py-2 pl-3 pr-4 text-black rounded text-sm  bg-purple-500 items-center bg-opacity-10 hover:bg-opacity-25 dark:bg-opacity-75 dark:hover:bg-opacity-100 dark:text-white">

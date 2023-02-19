@@ -1,25 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import "./FileInput.css";
 import { BiImageAdd } from 'react-icons/bi';
+import { AuthContext } from '../../Contexts/AuthProvider';
+import Loader from '../SharedComponents/Loader/Loader';
 
 
-const PostModal = ({setPostText}) => {
-    const [imagePrev, setImagePrev]=useState('')
-    const [image, setImage]=useState('')
+const PostModal = ({setPostText, addImageHandler, imagePrev, handlePost, isLoading, image, postText}) => {
+    const {user}= useContext(AuthContext)
 
-    const user={
-        name:'Naz'
-    }
 
-    const addImageHandler=(e)=>{
-        const file=e.target.files[0]
-        const reader=new FileReader()
-        reader.readAsDataURL(file)
-        reader.onloadend=()=>{
-            setImagePrev(reader.result)
-            setImage(file)
-        }
-    }
     return (
         <div>
             <input  type="checkbox" id="post-modal" className="modal-toggle" />
@@ -28,9 +17,9 @@ const PostModal = ({setPostText}) => {
                     <h3 className="text-lg font-bold text-center pb-3 border-b border-purple-500 border-opacity-25">Create post</h3>
                     <div>
                         <div className='flex items-center gap-5 px-5 py-3'>
-                            <img src="https://picsum.photos/200/300" alt="" className='rounded-full w-10 h-10' />
+                            <img src={user?.photoURL} alt="" className='rounded-full w-10 h-10' />
                             <div>
-                                <span className='font-semibold'>{user?.name}</span>
+                                <span className='font-semibold'>{user?.displayName}</span>
                             </div>
                         </div>
                     </div>
@@ -38,7 +27,7 @@ const PostModal = ({setPostText}) => {
                         <input onChange={(e)=>setPostText(e.target.value)}
                         className='w-full bg-gray-300 rounded-lg  border-0 focus:border-0 focus:ring-gray-50 outline-0 px-3 py-3 dark:text-black'
                         name="postText" id="post-text" cols="30" rows="6"
-                        placeholder={`Whats's on your mind?`}
+                        placeholder={`Whats's on your mind, ${user?.displayName}?`}
                         />
                     </div>
                     <div className='px-5'>
@@ -57,8 +46,11 @@ const PostModal = ({setPostText}) => {
                         </label>
                     </div>
                     <div className='px-5'>
-                        <button className='py-2 my-3 rounded file-selector-button font-medium text-center text-sm  bg-purple-500 bg-opacity-75 hover:bg-opacity-100 w-full'>
-                            Post
+                        <button onClick={handlePost}  disabled={isLoading || (!image && !postText )} 
+                        className='flex justify-center items-center py-2 my-3 rounded file-selector-button font-medium text-center text-sm  bg-purple-500 bg-opacity-75 hover:bg-opacity-100 w-full'>
+                            {
+                                isLoading  ? <div className='flex justify-center items-center'> <Loader/></div>: 'Post'
+                            }
                         </button>
                     </div>
                     <div className="modal-action px-5">

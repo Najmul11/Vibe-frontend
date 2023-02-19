@@ -13,9 +13,9 @@ const LoginModal = ({setIsLoginModalOpen}) => {
                 <div className="modal-box dark:bg-gray-800" >
                     {
                         loginModal ?
-                             <ModalBody setLoginModal={setLoginModal}/>
+                             <ModalBody setLoginModal={setLoginModal} setIsLoginModalOpen={setIsLoginModalOpen}/>
                             :
-                             <SignupModalBody setLoginModal={setLoginModal} />
+                             <SignupModalBody setLoginModal={setLoginModal} setIsLoginModalOpen={setIsLoginModalOpen}/>
                     }
                     <div className="modal-action">
                         <label htmlFor="login-modal" className="cursor-pointer font-medium py-2 pl-3 pr-4 text-black rounded text-sm  bg-purple-500 items-center bg-opacity-10 hover:bg-opacity-25 dark:bg-opacity-75 dark:hover:bg-opacity-100 dark:text-white">

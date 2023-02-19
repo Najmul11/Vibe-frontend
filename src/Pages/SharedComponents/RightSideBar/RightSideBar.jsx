@@ -1,24 +1,43 @@
-import React,{useState} from 'react'
+import React,{useState, useContext} from 'react'
+import { useLocation, useNavigate } from "react-router-dom";
 import {FaGoogle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { AuthContext } from '../../../Contexts/AuthProvider';
 import LoginModal from './LoginModal';
+import axios from 'axios';
+import toast from 'react-hot-toast'
 
 
 
 
 export const RightSideBar = () => {
     const [isLoginModalOpen, setIsLoginModalOpen]=useState(false)
+    const {signInWithGoogle,user}= useContext(AuthContext)
+
+    const location=useLocation()
+    const navigate=useNavigate()
+
+    const from=location.state?.from?.pathname || '/'
 
 
     const handleLoginModal= ()=>{
         setIsLoginModalOpen(true)
     }
 
-    const user = null
+    const handleGoogleSignin = ()=>{
+        signInWithGoogle()
+        .then(res=>{
+            const user={name:res.user.displayName, email:res.user.email, avatar:res.user.photoURL, uid:res.user.uid}
+            axios.post('http://localhost:5000/users',user)
+            .then(res=>{
+                toast.success('Welcome back')
+                setIsLoginModalOpen(false)
+            })
+            navigate(from, {replace:true})  
+        })
+        .catch(err=>{})
+    }
 
-    // const user={
-    //     name:'Maz'
-    // }
   return (
     <>
         {
@@ -30,15 +49,15 @@ export const RightSideBar = () => {
                     </div>
                 </div>
                 <div className='flex items-center shadow-sm gap-5 px-5 py-3'>
-                    <img src="https://picsum.photos/200/300" alt="" className='rounded-full w-10 h-10' />
+                    <img src={user?.photoURL} alt="" className='rounded-full w-10 h-10' />
                     <div>
-                        <span className='font-semibold'>{user?.name}</span>
+                        <span className='font-semibold'>{user?.displayName}</span>
                     </div>
                 </div>
                 <div className='flex items-center shadow-sm  gap-5 px-5 py-3'>
-                    <img src="https://picsum.photos/200/300" alt="" className='rounded-full w-10 h-10' />
+                    <img src={user?.photoURL} alt="" className='rounded-full w-10 h-10' />
                     <div>
-                    <span className='font-semibold'>{user?.name}</span>
+                    <span className='font-semibold'>{user?.displayName}</span>
                     </div>
                 </div>
             </div>
@@ -50,12 +69,12 @@ export const RightSideBar = () => {
                     <p className='text-gray-400'>Sign up now to get your own personalized timeline!</p>
                 </div>
 
-                <button className='flex items-center justify-center gap-2 py-3 px-6 rounded-full border-1 font-semibold border border-gray-300 w-full   hover:bg-gray-200'>
+                <button onClick={handleGoogleSignin} className='flex items-center justify-center gap-2 py-3 px-6 rounded-full border-1 font-semibold border border-gray-300 w-full   hover:bg-gray-200'>
                     <FaGoogle/> Login with Google
                 </button>
 
                 <div className='flex gap-2'>
-                    <label onClick={handleLoginModal} htmlFor="login-modal" className="text-center py-3 px-6 rounded-full border-1 font-semibold border              border-gray-300 w-full hover:bg-gray-200">
+                    <label  onClick={handleLoginModal} htmlFor="login-modal" className="cursor-pointer text-center py-3 px-6 rounded-full border-1 font-semibold border              border-gray-300 w-full hover:bg-gray-200">
                         Login
                     </label>
                 </div>
